@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPU AI Lost & Found | Premium Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 6%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            color: #f05a28;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+        }
+
+        .logo b {
+            color: #111;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #f05a28;
+        }
+
+        .login-btn {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .login-btn:hover {
+            background: #f05a28;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 90, 40, 0.3);
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            padding: 7rem 2rem;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, rgba(17, 17, 17, 0.9) 0%, rgba(43, 43, 43, 0.8) 100%), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920') center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 55vh;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .ai-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffb84d;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: #f05a28;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #e0e0e0;
+            margin-bottom: 40px;
+        }
+
+        /* Search Box */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 8px 8px 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .search-container:focus-within {
+            border-color: #f05a28;
+        }
+
+        .search-container input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 10px 0;
+        }
+
+        .ai-mic-btn {
+            background: #f0f4f8;
+            border: none;
+            color: #555;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .ai-mic-btn:hover {
+            background: #e2e8f0;
+            color: #f05a28;
+        }
+
+        .ai-mic-btn.recording {
+            background: #ef4444;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .search-btn {
+            background: #f05a28;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #d94d1f;
+        }
+
+        .voice-status {
+            font-size: 0.9rem;
+            color: #4ade80;
+            margin-top: 15px;
+            min-height: 20px;
+        }
+
+        /* Feed & Cards */
+        .container {
+            padding: 4rem 6%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            background: #fff;
+            padding: 6px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .filter-btn {
+            padding: 8px 24px;
+            background: transparent;
+            border: none;
+            color: #666;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #111;
+            color: white;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #f0f0f0;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-img-container {
+            height: 220px;
+            background: #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.05);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .status-lost {
+            background: #ef4444;
+        }
+
+        .status-found {
+            background: #22c55e;
+        }
+
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #111;
+        }
+
+        .card-content p {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-content i {
+            color: #f05a28;
+        }
+
+        .contact-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #111;
+            background: transparent;
+            color: #111;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: #111;
+            color: white;
+        }
+
+        /* MODAL (POPUP) STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #888;
+            transition: 0.3s;
+        }
+
+        .close:hover {
+            color: #ef4444;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .modal-content input:focus,
+        .modal-content select:focus {
+            border-color: #f05a28;
+            box-shadow: 0 0 0 3px rgba(240, 90, 40, 0.1);
+        }
+
+        .submit-btn {
+            background: #f05a28;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #d94d1f;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>LPU <b>Lost & Found</b></span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#" onclick="openModal('reportModal')">Report Item</a>
+            <button class="login-btn" onclick="openModal('loginModal')">
+                <i class="fa-solid fa-user-graduate"></i> Student Login
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="ai-badge"><i class="fa-solid fa-bolt"></i> Verto Smart Campus</span>
+            <h1>Lost Something on <span>Campus?</span></h1>
+            <p>Smart Voice Search & Image Recognition to quickly find your misplaced items.</p>
+
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Try 'Black Wallet in Block 32'...">
+                <button class="ai-mic-btn" id="micBtn" title="Search by Voice">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+                <button class="search-btn" id="searchBtn">AI Search</button>
+            </div>
+            <p id="voice-status" class="voice-status"></p>
+        </div>
+    </header>
+
+    <!-- Live Feed -->
+    <main class="container">
+        <div class="section-header">
+            <h2>Live Campus Feed</h2>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Items</button>
+                <button class="filter-btn" data-filter="lost">Lost</button>
+                <button class="filter-btn" data-filter="found">Found</button>
+            </div>
+        </div>
+
+        <div class="items-grid" id="itemsGrid">
+            <!-- Cards JS se aayengi -->
+        </div>
+    </main>
+
+    <!-- LOGIN MODAL (POPUP) -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2><i class="fa-solid fa-building-columns"></i> LPU UMS Login</h2>
+            <p>Enter your registration details to continue.</p>
+            <form id="loginForm">
+                <input type="text" placeholder="Registration Number" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="submit-btn">Login Securely</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- REPORT ITEM MODAL (POPUP) -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reportModal')">&times;</span>
+            <h2>Report Lost / Found Item</h2>
+            <form id="reportForm">
+                <select id="itemType" required>
+                    <option value="lost">I Lost Something</option>
+                    <option value="found">I Found Something</option>
+                </select>
+                <input type="text" id="itemName" placeholder="Item Name (e.g., Apple Watch)" required>
+                <input type="text" id="itemLocation" placeholder="Location (e.g., Block 32, Room 101)" required>
+                <input type="url" id="itemImage" placeholder="Image URL (Optional)">
+                <button type="submit" class="submit-btn">Post to Live Feed</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Database
+            let database = [
+                {
+                    id: 1,
+                    title: "LPU Student ID Card",
+                    type: "found",
+                    location: "Block 32, Ground Floor",
+                    date: "29 Oct 2026",
+                    image: "images.jpg",
+                    aiTags: ["id", "card", "lanyard", "identity"]
+                },
+                {
+                    id: 2,
+                    title: "Apple AirPods Pro",
+                    type: "lost",
+                    location: "Machenic Labs",
+                    date: "28 Oct 2026",
+                    image: "https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?auto=format&fit=crop&q=80&w=600",
+                    aiTags: ["earbuds", "apple", "white"]
+                },
+                {
+                    id: 3,
+                    title: "Black Leather Wallet",
+                    type: "lost",
+                    location: "Uni Mall Food Court",
+                    date: "27 Oct 2026",
+                    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=600",
+                    aiTags: ["money", "leather", "black"]
+                }
+            ];
+
+            const itemsGrid = document.getElementById('itemsGrid');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const micBtn = document.getElementById('micBtn');
+            const voiceStatus = document.getElementById('voice-status');
+
+            // Cards Show Karne Ka Function
+            function displayItems(items) {
+                itemsGrid.innerHTML = '';
+                if (items.length === 0) {
+                    itemsGrid.innerHTML = `<h3 style="grid-column: 1/-1; text-align:center; color:#777; margin-top:20px;">No items found!</h3>`;
+                    return;
+                }
+
+                items.forEach(item => {
+                    // Yahan onerror lagaya hai, image na milne par premium placeholder aayega
+                    const cardHTML = `
+                        <div class="card">
+                            <div class="card-img-container">
+                                <img src="${item.image}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=600'">
+                                <span class="status-badge ${item.type === 'lost' ? 'status-lost' : 'status-found'}">
+                                    ${item.type}
+                                </span>
+                            </div>
+                            <div class="card-content">
+                                <h3>${item.title}</h3>
+                                <p><i class="fa-solid fa-location-dot"></i> ${item.location}</p>
+                                <p><i class="fa-regular fa-calendar"></i> ${item.date}</p>
+                                <button class="contact-btn" onclick="alert('Contacting owner/finder for: ${item.title}')">
+                                    Claim / Contact
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    itemsGrid.innerHTML += cardHTML;
+                });
+            }
+
+            displayItems(database);
+
+            // ==========================================
+            // MODAL (POPUP) JAVASCRIPT
+            // ==========================================
+            window.openModal = function (modalId) {
+                document.getElementById(modalId).style.display = 'flex';
+            }
+
+            window.closeModal = function (modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            // Modal ke bahar click karne par band hona
+            window.onclick = function (event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = "none";
+                }
+            }
+
+            // Login Form Submit (Demo)
+            document.getElementById('loginForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert("Login Successful! Welcome Verto.");
+                closeModal('loginModal');
+            });
+
+            // Report Item Form Submit (Naya item add karega!)
+            document.getElementById('reportForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const type = document.getElementById('itemType').value;
+                const name = document.getElementById('itemName').value;
+                const location = document.getElementById('itemLocation').value;
+                let image = document.getElementById('itemImage').value;
+
+                if (!image) {
+                    image = "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=600";
+                }
+
+                const today = new Date();
+                const dateString = today.getDate() + " Oct 2026";
+
+                const newItem = {
+                    id: database.length + 1,
+                    title: name,
+                    type: type,
+                    location: location,
+                    date: dateString,
+                    image: image,
+                    aiTags: [name.toLowerCase()]
+                };
+
+                // Database ke sabse upar add karna (unshift)
+                database.unshift(newItem);
+
+                // Page par update karna
+                displayItems(database);
+
+                this.reset();
+                closeModal('reportModal');
+
+                alert("Item successfully reported to live feed!");
+            });
+
+            // ==========================================
+            // SEARCH & FILTER JAVASCRIPT
+            // ==========================================
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    const type = e.target.getAttribute('data-filter');
+                    if (type === 'all') displayItems(database);
+                    else displayItems(database.filter(item => item.type === type));
+                });
+            });
+
+            const performSearch = () => {
+                const q = searchInput.value.toLowerCase().trim();
+                const matched = database.filter(item =>
+                    item.title.toLowerCase().includes(q) ||
+                    item.location.toLowerCase().includes(q) ||
+                    item.aiTags.some(tag => tag.includes(q))
+                );
+                displayItems(matched);
+            };
+
+            searchInput.addEventListener('keyup', performSearch);
+            searchBtn.addEventListener('click', performSearch);
+
+            // AI Voice Search
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                const recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-IN';
+
+                micBtn.addEventListener('click', () => {
+                    try {
+                        recognition.start();
+                        micBtn.classList.add('recording');
+                        voiceStatus.innerText = "Listening... Speak now.";
+                    } catch (e) {
+                        console.log("Mic error");
+                    }
+                });
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    searchInput.value = transcript;
+                    voiceStatus.innerText = `Recognized: "${transcript}"`;
+                    performSearch();
+                };
+
+                recognition.onspeechend = () => {
+                    recognition.stop();
+                    micBtn.classList.remove('recording');
+                    setTimeout(() => voiceStatus.innerText = "", 3000);
+                };
+
+                recognition.onerror = () => {
+                    micBtn.classList.remove('recording');
+                    voiceStatus.innerText = "Error recognizing voice. Try again.";
+                    setTimeout(() => voiceStatus.innerText = "", 3000);
+                };
+            } else {
+                micBtn.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
